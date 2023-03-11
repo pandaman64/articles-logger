@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getAuthRedirectUrl, supabase } from "@/lib/supabase";
 import { useSession } from "@supabase/auth-helpers-react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -21,7 +21,7 @@ const LoginPage: FC = () => {
     <Auth
       supabaseClient={supabase}
       appearance={{ theme: ThemeSupa }}
-      redirectTo="/"
+      redirectTo={getAuthRedirectUrl()}
     />
   );
 };
