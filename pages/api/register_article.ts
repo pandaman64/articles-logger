@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 
@@ -16,16 +15,6 @@ export default async function handler(
     const parseResult = requestSchema.safeParse(req.body);
     if (parseResult.success) {
       const data = parseResult.data;
-
-      const createResult = await prisma.article.create({
-        data: {
-          title: data.title ?? null,
-          text: data.text ?? null,
-          url: data.url ?? null,
-        },
-      });
-      console.log(createResult);
-
       res.redirect(302, "/");
     } else {
       console.log(parseResult.error);

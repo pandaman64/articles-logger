@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -6,8 +5,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const articles = await prisma.article.findMany();
-    res.status(200).json(articles);
+    res.status(200).json([]);
   } else {
     res.setHeader("Allow", ["GET"]);
     res.status(405).end();
