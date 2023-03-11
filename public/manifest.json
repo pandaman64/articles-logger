@@ -17,11 +17,11 @@
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
   "start_url": "/",
-  "display": "standalone",
+  "display": "minimal-ui",
   "orientation": "portrait",
 
   "share_target": {
-    "action": "/api/register_article",
+    "action": "/api/redirect",
     "method": "POST",
     "enctype": "application/x-www-form-urlencoded",
     "params": {
