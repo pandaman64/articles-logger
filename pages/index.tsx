@@ -4,10 +4,9 @@ import Head from "next/head";
 import useSWR from "swr";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data } = useSWR("/api/list_articles", async () => {
+  const { data } = useSWR("/articles", async () => {
     return await supabase.from("articles").select();
   });
   const { data: articles, error } = data || {};
