@@ -26,7 +26,7 @@ export default async function handler(
       });
       console.log(createResult);
 
-      res.redirect("/");
+      res.redirect(302, "/");
     } else {
       console.log(parseResult.error);
       res.status(400).json({ status: "failed" });
