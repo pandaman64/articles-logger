@@ -21,7 +21,7 @@
   "orientation": "portrait",
 
   "share_target": {
-    "action": "/articles/new",
+    "action": "/api/redirect",
     "method": "POST",
     "enctype": "application/x-www-form-urlencoded",
     "params": {
