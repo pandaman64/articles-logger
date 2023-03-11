@@ -1,12 +1,15 @@
 import { supabase } from "@/lib/supabase";
+import { useUser } from "@supabase/auth-helpers-react";
 import { Noto_Sans_JP } from "next/font/google";
 import Head from "next/head";
+import Link from "next/link";
 import useSWR from "swr";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
 
 export default function Home() {
-  const { data } = useSWR("/articles", async () => {
+  const user = useUser();
+  const { data } = useSWR(user && "/articles", async () => {
     return await supabase.from("articles").select();
   });
   const { data: articles, error } = data || {};
@@ -24,6 +27,19 @@ export default function Home() {
       </Head>
       <main className={noto.className}>
         こんにちは、世界！
+        {user ? (
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut();
+            }}
+          >
+            ログアウト
+          </button>
+        ) : (
+          <div>
+            <Link href="/login">ログインしてね</Link>
+          </div>
+        )}
         {error && <div>{error.toString()}</div>}
         <ol>
           {articles?.map((article) => (
