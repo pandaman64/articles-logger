@@ -1,13 +1,12 @@
 import Head from "next/head";
 import { Noto_Sans_JP } from "next/font/google";
 import useSWR from "swr";
-import { Article } from "@prisma/client";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data, error } = useSWR<Article[]>("/api/list_articles", fetcher);
+  const { data, error } = useSWR<any[]>("/api/list_articles", fetcher);
 
   return (
     <>
