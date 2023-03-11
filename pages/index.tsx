@@ -1,12 +1,16 @@
-import Head from "next/head";
+import { supabase } from "@/lib/supabase";
 import { Noto_Sans_JP } from "next/font/google";
+import Head from "next/head";
 import useSWR from "swr";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const { data, error } = useSWR<any[]>("/api/list_articles", fetcher);
+  const { data } = useSWR("/api/list_articles", async () => {
+    return await supabase.from("articles").select();
+  });
+  const { data: articles, error } = data || {};
 
   return (
     <>
@@ -23,10 +27,10 @@ export default function Home() {
         こんにちは、世界！
         {error && <div>{error.toString()}</div>}
         <ol>
-          {data?.map((article) => (
+          {articles?.map((article) => (
             <li
               key={article.id}
-            >{`・id=${article.id}&title=${article.title}&text=${article.text}&url=${article.url}`}</li>
+            >{`・id=${article.id}&title=${article.title}&content=${article.content}&url=${article.url}`}</li>
           ))}
         </ol>
       </main>

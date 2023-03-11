@@ -17,7 +17,7 @@ export interface Database {
           title: string | null
           updated_at: string
           url: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           content?: string | null
@@ -26,7 +26,7 @@ export interface Database {
           title?: string | null
           updated_at?: string
           url?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           content?: string | null
@@ -35,7 +35,7 @@ export interface Database {
           title?: string | null
           updated_at?: string
           url?: string | null
-          user_id?: string | null
+          user_id?: string
         }
       }
     }
