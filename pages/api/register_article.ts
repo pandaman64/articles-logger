@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-
-const prisma = new PrismaClient();
 
 const requestSchema = z.object({
   title: z.string().nullish(),

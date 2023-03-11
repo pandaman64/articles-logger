@@ -1,19 +1,16 @@
 import Head from "next/head";
 import { Noto_Sans_JP } from "next/font/google";
-import { useEffect, useState } from "react";
-import { Article } from "./get_share";
+import useSWR from "swr";
+import { Article } from "@prisma/client";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  useEffect(() => {
-    const data = sessionStorage.getItem("articles-logger-articles");
-    if (data !== null) {
-      const articles: Article[] = JSON.parse(data);
-      setArticles(articles);
-    }
-  }, [setArticles]);
+  const { data, error, isLoading } = useSWR<Article[]>(
+    "/api/list_articles",
+    fetcher
+  );
 
   return (
     <>
@@ -28,16 +25,12 @@ export default function Home() {
       </Head>
       <main className={noto.className}>
         こんにちは、世界！
+        {error && <div>{error.toString()}</div>}
         <ol>
-          {articles.map((article, index) => (
-            <li key={index}>
-              記事↓
-              <ul>
-                <li>title: {article.title ?? "null"}</li>
-                <li>text: {article.text ?? "null"}</li>
-                <li>url: {article.url ?? "null"}</li>
-              </ul>
-            </li>
+          {data?.map((article) => (
+            <li
+              key={article.id}
+            >{`・id=${article.id}&title=${article.title}&text=${article.text}&url=${article.url}`}</li>
           ))}
         </ol>
       </main>
