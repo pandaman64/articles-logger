@@ -5,9 +5,9 @@ import { z } from "zod";
 const prisma = new PrismaClient();
 
 const requestSchema = z.object({
-  title: z.string().nullable(),
-  text: z.string().nullable(),
-  url: z.string().nullable(),
+  title: z.string().nullish(),
+  text: z.string().nullish(),
+  url: z.string().nullish(),
 });
 
 export default async function handler(
@@ -15,18 +15,22 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    console.log(req.body);
     const parseResult = requestSchema.safeParse(req.body);
     if (parseResult.success) {
       const data = parseResult.data;
 
       const createResult = await prisma.article.create({
-        data,
+        data: {
+          title: data.title ?? null,
+          text: data.text ?? null,
+          url: data.url ?? null,
+        },
       });
       console.log(createResult);
 
       res.status(200).json({ status: "ok" });
     } else {
+      console.log(parseResult.error);
       res.status(400).json({ status: "failed" });
     }
   } else {
