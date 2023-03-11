@@ -15,6 +15,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
+    console.log(req.body);
     const parseResult = requestSchema.safeParse(req.body);
     if (parseResult.success) {
       const data = parseResult.data;
