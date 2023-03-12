@@ -11,30 +11,30 @@ export interface Database {
     Tables: {
       articles: {
         Row: {
-          content: string | null
+          content: string
           id: number
           inserted_at: string
-          title: string | null
+          title: string
           updated_at: string
-          url: string | null
+          url: string
           user_id: string
         }
         Insert: {
-          content?: string | null
+          content: string
           id?: number
           inserted_at?: string
-          title?: string | null
+          title: string
           updated_at?: string
-          url?: string | null
+          url: string
           user_id: string
         }
         Update: {
-          content?: string | null
+          content?: string
           id?: number
           inserted_at?: string
-          title?: string | null
+          title?: string
           updated_at?: string
-          url?: string | null
+          url?: string
           user_id?: string
         }
       }
@@ -53,4 +53,3 @@ export interface Database {
     }
   }
 }
-

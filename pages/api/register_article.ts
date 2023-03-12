@@ -26,9 +26,9 @@ export default async function handler(
       if (user !== null) {
         const { error } = await supabase.from("articles").insert({
           user_id: user.id,
-          title: data.title,
-          content: data.text,
-          url: data.url,
+          title: data.title ?? "",
+          content: data.text ?? "",
+          url: data.url ?? "",
         });
 
         if (error) {

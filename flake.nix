@@ -12,6 +12,7 @@
           pkgs.nil
 
           pkgs.nodejs
+          pkgs.postgresql
         ];
       };
     };
