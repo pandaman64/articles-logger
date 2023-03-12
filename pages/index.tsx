@@ -1,8 +1,10 @@
+import ArticleCard from "@/components/ArticleCard";
+import Header from "@/components/Header";
 import { supabase } from "@/lib/supabase";
+import { Box, Stack } from "@mui/joy";
 import { useUser } from "@supabase/auth-helpers-react";
 import { Noto_Sans_JP } from "next/font/google";
 import Head from "next/head";
-import Link from "next/link";
 import useSWR from "swr";
 
 const noto = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
@@ -26,28 +28,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={noto.className}>
-        こんにちは、世界！
-        {user ? (
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut();
-            }}
-          >
-            ログアウト
-          </button>
-        ) : (
-          <div>
-            <Link href="/login">ログインしてね</Link>
-          </div>
-        )}
-        {error && <div>{error.toString()}</div>}
-        <ol>
-          {articles?.map((article) => (
-            <li
-              key={article.id}
-            >{`・id=${article.id}&title=${article.title}&content=${article.content}&url=${article.url}`}</li>
-          ))}
-        </ol>
+        <Stack minHeight="100vh">
+          <Header />
+          {error && <div>{error.toString()}</div>}
+          <Stack gap={1} padding={2}>
+            {articles?.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </Stack>
+        </Stack>
       </main>
     </>
   );

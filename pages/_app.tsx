@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { CssBaseline, CssVarsProvider } from "@mui/joy";
 import {
   createBrowserSupabaseClient,
   Session,
@@ -20,7 +21,10 @@ export default function App({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      <Component {...pageProps} />
+      <CssVarsProvider>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </CssVarsProvider>
     </SessionContextProvider>
   );
 }
