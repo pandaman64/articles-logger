@@ -34,9 +34,9 @@ export default async function handler(
               url: data.url ?? "",
             },
             {
-              // Ignore insert when the article is already logged.
+              // Upsert on the articles' UNIQUE constraint. Force update to return a row and refresh updated_at.
               onConflict: "user_id,title,content,url",
-              ignoreDuplicates: true,
+              ignoreDuplicates: false,
             }
           )
           .select("id")
