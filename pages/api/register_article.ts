@@ -24,19 +24,31 @@ export default async function handler(
       } = await supabase.auth.getUser();
 
       if (user !== null) {
-        const { error } = await supabase.from("articles").insert({
-          user_id: user.id,
-          title: data.title ?? "",
-          content: data.text ?? "",
-          url: data.url ?? "",
-        });
+        const { data: response, error } = await supabase
+          .from("articles")
+          .upsert(
+            {
+              user_id: user.id,
+              title: data.title ?? "",
+              content: data.text ?? "",
+              url: data.url ?? "",
+            },
+            {
+              // Ignore insert when the article is already logged.
+              onConflict: "user_id,title,content,url",
+              ignoreDuplicates: true,
+            }
+          )
+          .select("id")
+          .single();
 
-        if (error) {
+        if (response) {
+          // We need to redirect with 302 because Android doesn't like 308 :(
+          res.redirect(302, `/articles/${response.id}`);
+        } else {
           console.warn(error);
+          res.redirect(302, `/`);
         }
-
-        // We need to redirect with 302 because Android doesn't like 308 :(
-        res.redirect(302, "/");
       } else {
         // Unauthenticated. Redirect to login.
         // TODO: continue?
