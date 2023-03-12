@@ -1,7 +1,7 @@
 import ArticleCard from "@/components/ArticleCard";
 import Header from "@/components/Header";
 import { supabase } from "@/lib/supabase";
-import { Box, Stack } from "@mui/joy";
+import { Stack } from "@mui/joy";
 import { useUser } from "@supabase/auth-helpers-react";
 import { Noto_Sans_JP } from "next/font/google";
 import Head from "next/head";
