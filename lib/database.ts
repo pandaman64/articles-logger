@@ -11,27 +11,33 @@ export interface Database {
     Tables: {
       articles: {
         Row: {
+          already_read: boolean | null
           content: string
           id: number
           inserted_at: string
+          rating: number | null
           title: string
           updated_at: string
           url: string
           user_id: string
         }
         Insert: {
+          already_read?: boolean | null
           content: string
           id?: number
           inserted_at?: string
+          rating?: number | null
           title: string
           updated_at?: string
           url: string
           user_id: string
         }
         Update: {
+          already_read?: boolean | null
           content?: string
           id?: number
           inserted_at?: string
+          rating?: number | null
           title?: string
           updated_at?: string
           url?: string
