@@ -32,8 +32,9 @@ function parseAlreadyRead(value: string): boolean | null {
 
 const ArticleCard: FC<{
   defaultArticle: Article;
+  isSubmitting: boolean;
   onSubmit: (newArticle: Article) => Promise<void>;
-}> = ({ defaultArticle, onSubmit }) => {
+}> = ({ defaultArticle, isSubmitting, onSubmit }) => {
   const [article, setArticle] = useState(defaultArticle);
 
   return (
@@ -92,7 +93,7 @@ const ArticleCard: FC<{
             <Link href="/">トップに戻る</Link>
           </Box>
           <Box marginLeft="auto">
-            <Button size="lg" type="submit">
+            <Button loading={isSubmitting} size="lg" type="submit">
               更新
             </Button>
           </Box>
@@ -116,12 +117,17 @@ export const ArticlePage: FC = () => {
   });
   const { data: article, error } = data || {};
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   return (
     <Container maxWidth="md">
       {article ? (
         <ArticleCard
           defaultArticle={article}
+          isSubmitting={isSubmitting}
           onSubmit={async (newArticle) => {
+            setIsSubmitting(true);
+
             const updateResult = await supabase
               .from("articles")
               .update(newArticle)
@@ -129,6 +135,7 @@ export const ArticlePage: FC = () => {
               .select()
               .single();
 
+            setIsSubmitting(false);
             if (updateResult.data) {
               mutate(updateResult);
             } else {
