@@ -165,20 +165,25 @@ export const ArticlePage: FC = () => {
   const { id } = router.query as { id: string };
 
   const user = useUser();
-  const { data, mutate } = useSWR(user && `/articles/${id}`, async () => {
-    return await supabase
-      .from("articles")
-      .select()
-      .eq("id", new Number(id))
-      .single();
-  });
+  const { data, mutate, isLoading } = useSWR(
+    user && `/articles/${id}`,
+    async () => {
+      return await supabase
+        .from("articles")
+        .select()
+        .eq("id", new Number(id))
+        .single();
+    }
+  );
   const { data: article, error } = data || {};
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Container maxWidth="md">
-      {article ? (
+      {isLoading ? (
+        <div>読み込み中</div>
+      ) : article ? (
         <ArticleCard
           defaultArticle={article}
           isSubmitting={isSubmitting}
