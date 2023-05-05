@@ -33,7 +33,7 @@ function parseAlreadyRead(value: string): boolean | null {
   }
 }
 
-const ArticleCard: FC<{
+export const ArticleCard: FC<{
   defaultArticle: Article;
   isSubmitting: boolean;
   onSubmit: (newArticle: Article) => Promise<void>;
