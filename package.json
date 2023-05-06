@@ -10,6 +10,7 @@
     "gentype": "supabase gen types typescript --project-id mslysvjarflfjadqleuj > lib/database.ts"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^8.3.0",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
     "@mui/joy": "^5.0.0-alpha.78",
@@ -24,10 +25,8 @@
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.0",
     "next": "13.4.0",
-    "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "swr": "^2.1.5",
     "typescript": "5.0.4",
     "zod": "^3.21.4"
   },
