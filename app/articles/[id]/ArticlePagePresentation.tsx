@@ -1,4 +1,7 @@
-import { Article, supabase } from "@/lib/supabase";
+"use client";
+
+import { useSupabase } from "@/app/supabase-provider";
+import { Article } from "@/lib/supabase";
 import {
   Box,
   Button,
@@ -14,11 +17,9 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import { useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
-import useSWR from "swr";
 
 function parseAlreadyRead(value: string): boolean | null {
   switch (value) {
@@ -33,7 +34,7 @@ function parseAlreadyRead(value: string): boolean | null {
   }
 }
 
-export const ArticleCard: FC<{
+const ArticleForm: FC<{
   defaultArticle: Article;
   isSubmitting: boolean;
   onSubmit: (newArticle: Article) => Promise<void>;
@@ -160,74 +161,52 @@ export const ArticleCard: FC<{
   );
 };
 
-export const ArticlePage: FC = () => {
+export default function ArticlePagePresentation({
+  article,
+}: {
+  article: Article;
+}) {
   const router = useRouter();
-  const { id } = router.query as { id: string };
-
-  const user = useUser();
-  const { data, mutate, isLoading } = useSWR(
-    user && `/articles/${id}`,
-    async () => {
-      return await supabase
-        .from("articles")
-        .select()
-        .eq("id", new Number(id))
-        .single();
-    }
-  );
-  const { data: article, error } = data || {};
-
+  const { supabase } = useSupabase();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <Container maxWidth="md">
-      {isLoading ? (
-        <div>読み込み中</div>
-      ) : article ? (
-        <ArticleCard
-          defaultArticle={article}
-          isSubmitting={isSubmitting}
-          onSubmit={async (newArticle) => {
-            setIsSubmitting(true);
+      <ArticleForm
+        defaultArticle={article}
+        isSubmitting={isSubmitting}
+        onSubmit={async (newArticle) => {
+          setIsSubmitting(true);
 
-            const updateResult = await supabase
-              .from("articles")
-              .update(newArticle)
-              .eq("id", newArticle.id)
-              .select()
-              .single();
+          const updateResult = await supabase
+            .from("articles")
+            .update(newArticle)
+            .eq("id", newArticle.id)
+            .select()
+            .single();
 
-            setIsSubmitting(false);
-            if (updateResult.data) {
-              mutate(updateResult);
-            } else {
-              console.error(updateResult.error);
-            }
-          }}
-          deleteArticle={async () => {
-            setIsSubmitting(true);
+          setIsSubmitting(false);
 
-            const deleteResult = await supabase
-              .from("articles")
-              .delete()
-              .eq("id", article.id);
+          if (updateResult.data) {
+            router.refresh();
+          }
+        }}
+        deleteArticle={async () => {
+          setIsSubmitting(true);
 
-            setIsSubmitting(false);
-            if (deleteResult.data) {
-              router.push("/");
-            } else {
-              console.error(deleteResult.error);
-            }
-          }}
-        />
-      ) : (
-        <div>
-          {error?.toString() ?? "empty error"}
-          <Link href="/">トップに戻る</Link>
-        </div>
-      )}
+          const deleteResult = await supabase
+            .from("articles")
+            .delete()
+            .eq("id", article.id);
+
+          setIsSubmitting(false);
+          if (deleteResult.data) {
+            router.push("/");
+          } else {
+            console.error(deleteResult.error);
+          }
+        }}
+      />
     </Container>
   );
-};
-
-export default ArticlePage;
+}

@@ -1,6 +1,6 @@
 import { createRouteHandlerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { cookies, headers } from "next/headers";
-import ArticlePageComponent from "./ArticlePageComponent";
+import ArticlePagePresentation from "./ArticlePagePresentation";
 import { Database } from "@/lib/database";
 
 // do not cache this page
@@ -27,5 +27,5 @@ export default async function Page({
     return <>error: {error.message}</>;
   }
 
-  return <ArticlePageComponent article={article} />;
+  return <ArticlePagePresentation article={article} />;
 }
