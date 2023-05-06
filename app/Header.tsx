@@ -1,11 +1,10 @@
-import { supabase } from "@/lib/supabase";
 import { Box, Sheet } from "@mui/joy";
-import { useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { FC } from "react";
+import { useSupabase } from "./supabase-provider";
 
 export const Header: FC = () => {
-  const user = useUser();
+  const { supabase, session } = useSupabase();
   return (
     <Sheet
       sx={{
@@ -16,7 +15,7 @@ export const Header: FC = () => {
       }}
     >
       <Box marginLeft="auto" padding={1}>
-        {user ? (
+        {session ? (
           <button
             onClick={async () => {
               await supabase.auth.signOut();
