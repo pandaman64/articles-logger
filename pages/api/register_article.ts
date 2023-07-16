@@ -3,6 +3,8 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 
+export const runtime = "edge";
+
 const requestSchema = z.object({
   title: z.string().nullish(),
   text: z.string().nullish(),
